@@ -1,0 +1,59 @@
+# Dataset Generation Configuration
+
+# Data paths
+data:
+  music_dir: "data/raw/fma_small"
+  analysis_dir: "data/processed/track_analysis"
+  output_dir: "data/output/djnet_dataset"
+  fma_url: "https://os.unil.cloud.switch.ch/fma/fma_small.zip"
+
+# Audio processing parameters
+audio:
+  target_sample_rate: 44100
+  mono: true
+  tempo_threshold: 10.0  # BPM difference threshold for pairing
+  key_compatibility_threshold: 1  # Key difference threshold
+
+# Transition parameters
+transitions:
+  transition_bars: 8
+  beats_per_bar: 4
+  types:
+    - name: "linear_fade"
+      weight: 0.2
+    - name: "exp_fade"
+      weight: 0.2
+    - name: "bass_swap_eq"
+      weight: 0.3
+    - name: "filter_sweep"
+      weight: 0.1
+    - name: "hard_cut"
+      weight: 0.1
+    - name: "echo_fade"
+      weight: 0.1
+
+# Dataset generation
+dataset:
+  num_transitions: 5000
+  shuffle_pairs: true
+  minimum_valid_starts: 5
+  
+# Echo fade parameters
+echo_fade:
+  num_echos: 4
+  decay_db: 6
+
+# Filter sweep parameters
+filter_sweep:
+  start_freq: 20000
+  end_freq: 100
+  chunk_size_ms: 50
+
+# EQ parameters
+eq:
+  crossover_freq: 250
+
+# Exponential fade parameters
+exp_fade:
+  power_out_range: [1.5, 3.0]
+  power_in_range: [0.3, 0.8]
