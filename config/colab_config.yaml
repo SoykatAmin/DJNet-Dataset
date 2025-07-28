@@ -1,0 +1,59 @@
+# Colab-Optimized Configuration for DJNet Dataset Generator
+
+# Data paths (optimized for Google Drive storage)
+data:
+  music_dir: "/content/drive/MyDrive/DJNet_Data/raw/fma_small"
+  analysis_dir: "/content/drive/MyDrive/DJNet_Data/processed/track_analysis"
+  output_dir: "/content/drive/MyDrive/DJNet_Data/output/djnet_dataset"
+  fma_url: "https://os.unil.cloud.switch.ch/fma/fma_small.zip"
+
+# Audio processing parameters (optimized for Colab performance)
+audio:
+  target_sample_rate: 22050  # Lower sample rate for faster processing
+  mono: true
+  tempo_threshold: 12.0  # Slightly more lenient for better pairing
+  key_compatibility_threshold: 2
+
+# Transition parameters
+transitions:
+  transition_bars: 4  # Shorter transitions for faster generation
+  beats_per_bar: 4
+  types:
+    - name: "linear_fade"
+      weight: 0.3
+    - name: "exp_fade"
+      weight: 0.25
+    - name: "bass_swap_eq"
+      weight: 0.25
+    - name: "filter_sweep"
+      weight: 0.1
+    - name: "hard_cut"
+      weight: 0.05
+    - name: "echo_fade"
+      weight: 0.05
+
+# Dataset generation (smaller for demo, can be increased)
+dataset:
+  num_transitions: 100  # Start with smaller number for testing
+  shuffle_pairs: true
+  minimum_valid_starts: 3
+  
+# Echo fade parameters
+echo_fade:
+  num_echos: 3
+  decay_db: 5
+
+# Filter sweep parameters  
+filter_sweep:
+  start_freq: 15000
+  end_freq: 200
+  chunk_size_ms: 100
+
+# EQ parameters
+eq:
+  crossover_freq: 300
+
+# Exponential fade parameters
+exp_fade:
+  power_out_range: [1.2, 2.5]
+  power_in_range: [0.4, 0.9]

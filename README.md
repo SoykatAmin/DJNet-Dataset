@@ -1,5 +1,9 @@
 # DJNet Dataset Generator
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/SoykatAmin/DJNet-Dataset/blob/main/DJNet_Colab.ipynb)
+[![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 This project generates a dataset of synthetic DJ transitions for training neural networks to create smooth audio transitions between songs. The dataset includes various transition types such as linear fades, exponential fades, bass swaps, filter sweeps, hard cuts, and echo fades.
 
 ## Project Structure
@@ -48,9 +52,17 @@ DJNet-Dataset/
 
 ## Installation
 
+### Option 1: Google Colab (Recommended for Quick Start)
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/SoykatAmin/DJNet-Dataset/blob/main/DJNet_Colab.ipynb)
+
+Simply click the Colab badge above and follow the notebook instructions!
+
+### Option 2: Local Installation
+
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/SoykatAmin/DJNet-Dataset.git
 cd DJNet-Dataset
 ```
 
@@ -66,7 +78,20 @@ pip install -e .
 
 ## Usage
 
-### Quick Start
+### Option 1: Google Colab (Easiest)
+
+1. Open the [Colab notebook](https://colab.research.google.com/github/SoykatAmin/DJNet-Dataset/blob/main/DJNet_Colab.ipynb)
+2. Run all cells in sequence
+3. The notebook will:
+   - Install dependencies automatically
+   - Download the FMA dataset
+   - Generate transitions
+   - Save results to Google Drive
+   - Allow you to listen to generated samples
+
+### Option 2: Local Usage
+
+#### Quick Start
 
 1. Download the FMA dataset:
 ```bash
@@ -83,11 +108,20 @@ python scripts/analyze_tracks.py
 python scripts/generate_dataset.py
 ```
 
-### Full Pipeline
+#### Full Pipeline
 
 Run the complete pipeline:
 ```bash
 python scripts/run_pipeline.py
+```
+
+#### Using Make (Convenient)
+
+```bash
+make install      # Install dependencies
+make pipeline     # Run complete pipeline  
+make example      # Run demo
+make test         # Run tests
 ```
 
 ## Configuration
@@ -116,3 +150,11 @@ The generated dataset includes:
 - `target.wav`: Generated transition
 - `conditioning.json`: Metadata and parameters
 - `metadata.csv`: Master dataset index
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
