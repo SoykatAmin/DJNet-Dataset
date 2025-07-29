@@ -13,6 +13,8 @@ audio:
   mono: true
   tempo_threshold: 12.0  # Slightly more lenient for better pairing
   key_compatibility_threshold: 2
+  source_segment_length_sec: 20.0  # Length of source A and B segments
+  transition_length_sec: 4.0  # Length of the generated transition
 
 # Transition parameters
 transitions:
