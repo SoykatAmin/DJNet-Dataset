@@ -1,160 +1,110 @@
 # DJNet Dataset Generator
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/SoykatAmin/DJNet-Dataset/blob/main/DJNet_Colab.ipynb)
-[![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+## Overview
 
-This project generates a dataset of synthetic DJ transitions for training neural networks to create smooth audio transitions between songs. The dataset includes various transition types such as linear fades, exponential fades, bass swaps, filter sweeps, hard cuts, and echo fades.
+The DJNet Dataset Generator addresses the challenge of creating comprehensive training data for AI-powered DJ systems. By analyzing musical features such as tempo, key, and harmonic content, the system automatically identifies compatible track pairs and generates professional-quality transitions using various mixing techniques. This enables researchers and developers to train neural networks on realistic DJ mixing scenarios without manually creating thousands of transition examples.
 
-## Project Structure
+## Project Architecture
 
 ```
 DJNet-Dataset/
-├── README.md
-├── requirements.txt
-├── setup.py
+├── README.md                    # Project documentation
+├── requirements.txt             # Python dependencies
+├── setup.py                     # Package installation script
+├── generate_local_dataset.py    # Local dataset generation script
+├── monitor_local_progress.py    # Real-time progress monitoring
+├── colab_setup.py              # Google Colab configuration
+├── upload_to_gdrive.py         # Cloud storage integration
 ├── config/
-│   └── config.yaml
-├── src/
+│   ├── config.yaml             # Main configuration file
+│   └── colab_config.yaml       # Colab-specific settings
+├── src/                        # Core library modules
 │   ├── __init__.py
-│   ├── audio_analysis.py
-│   ├── pairing.py
-│   ├── transitions.py
-│   └── dataset_generator.py
-├── scripts/
-│   ├── download_data.py
-│   ├── analyze_tracks.py
-│   ├── generate_dataset.py
-│   └── run_pipeline.py
-├── tests/
+│   ├── audio_analysis.py       # Audio feature extraction
+│   ├── pairing.py              # Track compatibility algorithms
+│   ├── transitions.py          # Transition generation engine
+│   └── dataset_generator.py    # Main dataset orchestration
+├── scripts/                    # Modular pipeline components
+│   ├── download_data.py        # FMA dataset acquisition
+│   ├── analyze_tracks.py       # Batch audio analysis
+│   ├── generate_dataset.py     # Transition generation
+│   └── run_pipeline.py         # Complete automated pipeline
+├── tests/                      # Unit and integration tests
 │   ├── __init__.py
 │   ├── test_audio_analysis.py
 │   ├── test_pairing.py
 │   └── test_transitions.py
-└── data/
-    ├── raw/
-    ├── processed/
-    └── output/
+└── data/                       # Data storage structure
+    ├── fma_small.zip           # Downloaded FMA dataset
+    ├── track_analysis/         # Processed audio features
+    └── output/                 # Generated dataset samples
+        └── djnet_dataset_20k/  # Default output directory
 ```
 
-## Features
+## Quick Start Guide
 
-- **Audio Analysis**: Extract BPM, beats, downbeats, and key information from audio tracks
-- **Intelligent Pairing**: Find compatible track pairs based on tempo and key compatibility
-- **Multiple Transition Types**:
-  - Linear fade
-  - Exponential fade
-  - Bass swap with EQ
-  - Filter sweep
-  - Hard cut
-  - Echo fade
-- **Dataset Generation**: Generate thousands of transition samples with metadata
-
-## Installation
-
-### Option 1: Google Colab (Recommended for Quick Start)
+### Option 1: Google Colab (Recommended for Beginners)
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/SoykatAmin/DJNet-Dataset/blob/main/DJNet_Colab.ipynb)
 
-Simply click the Colab badge above and follow the notebook instructions!
-
 ### Option 2: Local Installation
 
-1. Clone the repository:
+For users who prefer local execution or need custom configurations:
+
+1. **Clone the repository:**
 ```bash
 git clone https://github.com/SoykatAmin/DJNet-Dataset.git
 cd DJNet-Dataset
 ```
 
-2. Install dependencies:
+2. **Set up Python environment:**
 ```bash
+# Create virtual environment (recommended)
+python -m venv djnet_env
+source djnet_env/bin/activate  # On Windows: djnet_env\Scripts\activate
+
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-3. Install the package in development mode:
+3. **Install the package:**
 ```bash
 pip install -e .
 ```
 
-## Usage
+### Option 3: One-Command Local Generation
 
-### Option 1: Google Colab (Easiest)
-
-1. Open the [Colab notebook](https://colab.research.google.com/github/SoykatAmin/DJNet-Dataset/blob/main/DJNet_Colab.ipynb)
-2. Run all cells in sequence
-3. The notebook will:
-   - Install dependencies automatically
-   - Download the FMA dataset
-   - Generate transitions
-   - Save results to Google Drive
-   - Allow you to listen to generated samples
-
-### Option 2: Local Usage
-
-#### Quick Start
-
-1. Download the FMA dataset:
-```bash
-python scripts/download_data.py
-```
-
-2. Analyze audio tracks:
-```bash
-python scripts/analyze_tracks.py
-```
-
-3. Generate the dataset:
-```bash
-python scripts/generate_dataset.py
-```
-
-#### Full Pipeline
-
-Run the complete pipeline:
-```bash
-python scripts/run_pipeline.py
-```
-
-#### Using Make (Convenient)
+For immediate dataset generation with default settings:
 
 ```bash
-make install      # Install dependencies
-make pipeline     # Run complete pipeline  
-make example      # Run demo
-make test         # Run tests
+python generate_local_dataset.py
 ```
 
-## Configuration
+This script will:
+- Download the FMA dataset (~8GB)
+- Analyze all audio tracks
+- Generate 20,000 transition samples
+- Save everything to `output/djnet_dataset_20k/`
 
-Edit `config/config.yaml` to customize:
-- Dataset size
-- Transition types and probabilities
-- Audio processing parameters
-- Output directories
+## Dataset Output Structure
 
-## Requirements
+The generated dataset follows a structured format optimized for machine learning workflows:
 
-- Python 3.7+
-- librosa
-- pydub
-- numpy
-- pandas
-- tqdm
-- PyYAML
+### Directory Structure
+```
+output/djnet_dataset_20k/
+├── transition_00000/           # Individual transition samples
+│   ├── source_a.wav           # First track segment (20s, 22kHz)
+│   ├── source_b.wav           # Second track segment (20s, 22kHz)
+│   ├── target.wav             # Generated transition (2-8s, 22kHz)
+│   └── conditioning.json      # Metadata and parameters
+├── transition_00001/
+│   └── ...
+├── metadata.csv               # Master dataset index
+├── dataset_stats.json         # Generation statistics
+└── progress.json              # Generation progress tracking
+```
 
-## Output
+## License
 
-The generated dataset includes:
-- `source_a.wav`: First track segment
-- `source_b.wav`: Second track segment  
-- `target.wav`: Generated transition
-- `conditioning.json`: Metadata and parameters
-- `metadata.csv`: Master dataset index
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
